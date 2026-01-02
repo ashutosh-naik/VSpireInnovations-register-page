@@ -1,10 +1,11 @@
+// ----- Register -----
+
 const registerForm = document.getElementById("registerForm");
 const registerError = document.getElementById("registerError");
 
 if (registerForm) {
-  registerForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
+  registerForm.addEventListener("submit", function (e) {
+    e.preventDefault();
     registerError.textContent = "";
 
     const fullName = document.getElementById("fullName").value.trim();
@@ -16,23 +17,20 @@ if (registerForm) {
     const password = document.getElementById("password").value.trim();
 
     if (!fullName || !email || !password) {
-      registerError.textContent = "Full Name, Email and Password are required.";
+      registerError.textContent = "Please fill required fields";
       return;
     }
 
-    const existingUser = localStorage.getItem("userData");
-
-    if (existingUser) {
-      const storedUser = JSON.parse(existingUser);
-
-      if (email === storedUser.email || phone === storedUser.phone) {
-        registerError.textContent =
-          "User already registered with this Email or Phone.";
+    const savedUser = localStorage.getItem("userData");
+    if (savedUser) {
+      const existing = JSON.parse(savedUser);
+      if (email === existing.email || phone === existing.phone) {
+        registerError.textContent = "User already exists";
         return;
       }
     }
 
-    const userData = {
+    const user = {
       fullName,
       age,
       phone,
@@ -42,50 +40,49 @@ if (registerForm) {
       password,
     };
 
-    localStorage.setItem("userData", JSON.stringify(userData));
-
+    localStorage.setItem("userData", JSON.stringify(user));
     localStorage.setItem("loginId", email || phone);
 
     window.location.href = "login.html";
   });
 }
 
+// ----- Login -----
+
 const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 
 if (loginForm) {
-  const savedLoginId = localStorage.getItem("loginId");
-  if (savedLoginId) {
-    document.getElementById("loginId").value = savedLoginId;
+  const savedLogin = localStorage.getItem("loginId");
+  if (savedLogin) {
+    document.getElementById("loginId").value = savedLogin;
   }
 
-  loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault();
     loginError.textContent = "";
 
     const loginId = document.getElementById("loginId").value.trim();
     const loginPassword = document.getElementById("loginPassword").value.trim();
 
     if (!loginId || !loginPassword) {
-      loginError.textContent = "Please enter Email/Phone and Password.";
+      loginError.textContent = "Enter login details";
       return;
     }
 
-    const storedUser = localStorage.getItem("userData");
-
-    if (!storedUser) {
-      loginError.textContent = "No account found. Please register first.";
+    const stored = localStorage.getItem("userData");
+    if (!stored) {
+      loginError.textContent = "Account not found";
       return;
     }
 
-    const userData = JSON.parse(storedUser);
+    const user = JSON.parse(stored);
 
     if (
-      (loginId !== userData.email && loginId !== userData.phone) ||
-      loginPassword !== userData.password
+      (loginId !== user.email && loginId !== user.phone) ||
+      loginPassword !== user.password
     ) {
-      loginError.textContent = "Invalid Email/Phone or Password.";
+      loginError.textContent = "Wrong email/phone or password";
       return;
     }
 
@@ -93,22 +90,24 @@ if (loginForm) {
   });
 }
 
-const fullNameEl = document.getElementById("dFullName");
+// ----- Dashboard -----
 
-if (fullNameEl) {
-  const storedUser = localStorage.getItem("userData");
+const nameEl = document.getElementById("dFullName");
 
-  if (!storedUser) {
+if (nameEl) {
+  const stored = localStorage.getItem("userData");
+
+  if (!stored) {
     window.location.href = "login.html";
   } else {
-    const userData = JSON.parse(storedUser);
+    const user = JSON.parse(stored);
 
-    document.getElementById("dFullName").textContent = userData.fullName;
-    document.getElementById("dAge").textContent = userData.age;
-    document.getElementById("dPhone").textContent = userData.phone;
-    document.getElementById("dEmail").textContent = userData.email;
-    document.getElementById("dAddress").textContent = userData.address;
-    document.getElementById("dPincode").textContent = userData.pincode;
+    document.getElementById("dFullName").textContent = user.fullName;
+    document.getElementById("dAge").textContent = user.age;
+    document.getElementById("dPhone").textContent = user.phone;
+    document.getElementById("dEmail").textContent = user.email;
+    document.getElementById("dAddress").textContent = user.address;
+    document.getElementById("dPincode").textContent = user.pincode;
   }
 
   document.getElementById("logoutBtn").addEventListener("click", function () {
