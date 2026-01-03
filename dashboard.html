@@ -46,12 +46,13 @@
         <input type="number" id="editPincode" style="display: none" />
       </p>
 
+      <p id="profileError" class="error-msg"></p>
+
       <button id="updateProfileBtn">Update Profile</button>
       <button id="changePasswordBtn">Change Password</button>
       <button id="logoutBtn">Logout</button>
     </div>
 
-    <!-- Change Password Modal -->
     <div id="passwordModal" style="display: none">
       <div class="modal-box">
         <h3>Change Password</h3>
@@ -75,8 +76,8 @@
 
         <p id="passwordError" class="error-msg"></p>
 
-        <button id="savePasswordBtn">Save Password</button>
-        <button id="closeModalBtn">Cancel</button>
+        <button type="button" id="savePasswordBtn">Save Password</button>
+        <button type="button" id="closeModalBtn">Cancel</button>
       </div>
     </div>
 

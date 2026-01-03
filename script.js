@@ -31,13 +31,13 @@ if (registerForm) {
     }
 
     const user = {
-      fullName: fullName,
-      age: age,
-      phone: phone,
-      email: email,
-      address: address,
-      pincode: pincode,
-      password: password,
+      fullName,
+      age,
+      phone,
+      email,
+      address,
+      pincode,
+      password,
     };
 
     localStorage.setItem("userData", JSON.stringify(user));
@@ -109,6 +109,7 @@ if (nameEl) {
   }
 
   const updateBtn = document.getElementById("updateProfileBtn");
+  const profileError = document.getElementById("profileError");
   let isEditMode = false;
 
   if (updateBtn) {
@@ -140,6 +141,7 @@ if (nameEl) {
         document.getElementById("editAddress").value = user.address;
         document.getElementById("editPincode").value = user.pincode;
 
+        profileError.textContent = "";
         updateBtn.textContent = "Update the Changes";
         isEditMode = true;
       } else {
