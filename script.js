@@ -1,5 +1,3 @@
-// ----- Register -----
-
 const registerForm = document.getElementById("registerForm");
 const registerError = document.getElementById("registerError");
 
@@ -47,8 +45,6 @@ if (registerForm) {
   });
 }
 
-// ----- Login -----
-
 const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 
@@ -89,8 +85,6 @@ if (loginForm) {
     window.location.href = "dashboard.html";
   });
 }
-
-// ----- Dashboard -----
 
 const nameEl = document.getElementById("dFullName");
 
