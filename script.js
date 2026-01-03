@@ -1,9 +1,12 @@
+// REGISTER SECTION
+
 const registerForm = document.getElementById("registerForm");
 const registerError = document.getElementById("registerError");
 
 if (registerForm) {
   registerForm.addEventListener("submit", function (e) {
     e.preventDefault();
+
     registerError.textContent = "";
 
     const fullName = document.getElementById("fullName").value.trim();
@@ -21,21 +24,22 @@ if (registerForm) {
 
     const savedUser = localStorage.getItem("userData");
     if (savedUser) {
-      const existing = JSON.parse(savedUser);
-      if (email === existing.email || phone === existing.phone) {
+      const existingUser = JSON.parse(savedUser);
+
+      if (email === existingUser.email || phone === existingUser.phone) {
         registerError.textContent = "User already exists";
         return;
       }
     }
 
     const user = {
-      fullName,
-      age,
-      phone,
-      email,
-      address,
-      pincode,
-      password,
+      fullName: fullName,
+      age: age,
+      phone: phone,
+      email: email,
+      address: address,
+      pincode: pincode,
+      password: password,
     };
 
     localStorage.setItem("userData", JSON.stringify(user));
@@ -45,17 +49,20 @@ if (registerForm) {
   });
 }
 
+// LOGIN SECTION
+
 const loginForm = document.getElementById("loginForm");
 const loginError = document.getElementById("loginError");
 
 if (loginForm) {
-  const savedLogin = localStorage.getItem("loginId");
-  if (savedLogin) {
-    document.getElementById("loginId").value = savedLogin;
+  const savedLoginId = localStorage.getItem("loginId");
+  if (savedLoginId) {
+    document.getElementById("loginId").value = savedLoginId;
   }
 
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
+
     loginError.textContent = "";
 
     const loginId = document.getElementById("loginId").value.trim();
@@ -66,18 +73,19 @@ if (loginForm) {
       return;
     }
 
-    const stored = localStorage.getItem("userData");
-    if (!stored) {
+    const storedUser = localStorage.getItem("userData");
+    if (!storedUser) {
       loginError.textContent = "Account not found";
       return;
     }
 
-    const user = JSON.parse(stored);
+    const user = JSON.parse(storedUser);
 
-    if (
-      (loginId !== user.email && loginId !== user.phone) ||
-      loginPassword !== user.password
-    ) {
+    const isValidUser =
+      (loginId === user.email || loginId === user.phone) &&
+      loginPassword === user.password;
+
+    if (!isValidUser) {
       loginError.textContent = "Wrong email/phone or password";
       return;
     }
@@ -86,15 +94,17 @@ if (loginForm) {
   });
 }
 
+// DASHBOARD SECTION
+
 const nameEl = document.getElementById("dFullName");
 
 if (nameEl) {
-  const stored = localStorage.getItem("userData");
+  const storedUser = localStorage.getItem("userData");
 
-  if (!stored) {
+  if (!storedUser) {
     window.location.href = "login.html";
   } else {
-    const user = JSON.parse(stored);
+    const user = JSON.parse(storedUser);
 
     document.getElementById("dFullName").textContent = user.fullName;
     document.getElementById("dAge").textContent = user.age;
