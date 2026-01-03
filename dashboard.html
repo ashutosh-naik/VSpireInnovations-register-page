@@ -10,14 +10,74 @@
     <div id="userDataContainer">
       <h2>User details</h2>
 
-      <p><strong>Name:</strong> <span id="dFullName"></span></p>
-      <p><strong>Age:</strong> <span id="dAge"></span></p>
-      <p><strong>Phone:</strong> <span id="dPhone"></span></p>
-      <p><strong>Email:</strong> <span id="dEmail"></span></p>
-      <p><strong>Address:</strong> <span id="dAddress"></span></p>
-      <p><strong>Pincode:</strong> <span id="dPincode"></span></p>
+      <p>
+        <strong>Name:</strong>
+        <span id="dFullName"></span>
+        <input type="text" id="editFullName" style="display: none" />
+      </p>
 
+      <p>
+        <strong>Age:</strong>
+        <span id="dAge"></span>
+        <input type="number" id="editAge" style="display: none" />
+      </p>
+
+      <p>
+        <strong>Phone:</strong>
+        <span id="dPhone"></span>
+        <input type="tel" id="editPhone" style="display: none" />
+      </p>
+
+      <p>
+        <strong>Email:</strong>
+        <span id="dEmail"></span>
+        <input type="email" id="editEmail" style="display: none" />
+      </p>
+
+      <p>
+        <strong>Address:</strong>
+        <span id="dAddress"></span>
+        <textarea id="editAddress" style="display: none"></textarea>
+      </p>
+
+      <p>
+        <strong>Pincode:</strong>
+        <span id="dPincode"></span>
+        <input type="number" id="editPincode" style="display: none" />
+      </p>
+
+      <button id="updateProfileBtn">Update Profile</button>
+      <button id="changePasswordBtn">Change Password</button>
       <button id="logoutBtn">Logout</button>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="passwordModal" style="display: none">
+      <div class="modal-box">
+        <h3>Change Password</h3>
+
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Enter new password"
+        />
+
+        <input
+          type="password"
+          id="confirmPassword"
+          placeholder="Confirm new password"
+        />
+
+        <div class="confirm-check">
+          <input type="checkbox" id="confirmChange" />
+          <label for="confirmChange">I confirm to change my password</label>
+        </div>
+
+        <p id="passwordError" class="error-msg"></p>
+
+        <button id="savePasswordBtn">Save Password</button>
+        <button id="closeModalBtn">Cancel</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
