@@ -13,12 +13,10 @@ function showToast(message, duration = 1500) {
 window.showToast = showToast;
 
 const registerForm = document.getElementById("registerForm");
-const registerError = document.getElementById("registerError");
 
 if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    registerError.textContent = "";
 
     const user = {
       fullName: document.getElementById("fullName").value.trim(),
@@ -31,7 +29,7 @@ if (registerForm) {
     };
 
     if (!user.fullName || !user.email || !user.phone || !user.password) {
-      registerError.textContent = "Please fill required fields";
+      showToast("Please fill required fields");
       return;
     }
 
@@ -45,7 +43,7 @@ if (registerForm) {
       const data = await res.json();
 
       if (!res.ok) {
-        registerError.textContent = data.message;
+        showToast(data.message || "Server error");
         return;
       }
 
@@ -56,13 +54,12 @@ if (registerForm) {
         window.location.href = "login.html";
       }, 1000);
     } catch {
-      registerError.textContent = "Server error";
+      showToast("Server error");
     }
   });
 }
 
 const loginForm = document.getElementById("loginForm");
-const loginError = document.getElementById("loginError");
 
 if (loginForm) {
   const savedLoginId = localStorage.getItem("lastLoginId");
@@ -72,13 +69,12 @@ if (loginForm) {
 
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    loginError.textContent = "";
 
     const loginId = document.getElementById("loginId").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
 
     if (!loginId || !password) {
-      loginError.textContent = "Enter login details";
+      showToast("Enter login details");
       return;
     }
 
@@ -92,7 +88,7 @@ if (loginForm) {
       const data = await res.json();
 
       if (!res.ok) {
-        loginError.textContent = data.message;
+        showToast(data.message || "Invalid credentials");
         return;
       }
 
@@ -103,7 +99,7 @@ if (loginForm) {
         window.location.href = "dashboard.html";
       }, 1000);
     } catch {
-      loginError.textContent = "Server error";
+      showToast("Server error");
     }
   });
 }
@@ -113,6 +109,13 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 if (dFullName && !user) {
   window.location.href = "login.html";
+}
+
+const greeting = document.getElementById("greeting");
+
+if (greeting && user?.fullName) {
+  const firstName = user.fullName.split(" ")[0];
+  greeting.textContent = `Good to see you, ${firstName}`;
 }
 
 if (dFullName) {
@@ -129,15 +132,12 @@ if (dFullName) {
   const editEmail = document.getElementById("editEmail");
   const editAddress = document.getElementById("editAddress");
   const editPincode = document.getElementById("editPincode");
-  const profileSuccess = document.getElementById("profileSuccess");
 
   const newPassword = document.getElementById("newPassword");
   const confirmPassword = document.getElementById("confirmPassword");
   const confirmChange = document.getElementById("confirmChange");
-  const passwordError = document.getElementById("passwordError");
 
   const updateBtn = document.getElementById("updateProfileBtn");
-  const profileError = document.getElementById("profileError");
   let editing = false;
 
   if (updateBtn) {
@@ -167,21 +167,18 @@ if (dFullName) {
 
         const data = await res.json();
         if (!res.ok) {
-          if (profileError)
-            profileError.textContent = data.message || "Server error";
+          showToast(data.message || "Server error");
           return;
         }
 
         localStorage.setItem("user", JSON.stringify(data.user));
-        if (profileError) profileError.textContent = "";
-        if (profileSuccess)
-          profileSuccess.textContent = "Profile updated successfully";
+        showToast("Profile updated successfully");
 
         setTimeout(() => {
           location.reload();
         }, 1000);
       } catch (err) {
-        if (profileError) profileError.textContent = "Server error";
+        showToast("Server error");
         console.error(err);
       }
     });
@@ -234,12 +231,7 @@ if (dFullName) {
 
   if (savePasswordBtn) {
     savePasswordBtn.addEventListener("click", async () => {
-      if (
-        !newPassword ||
-        !confirmPassword ||
-        !confirmChange ||
-        !passwordError
-      ) {
+      if (!newPassword || !confirmPassword || !confirmChange) {
         console.warn("Password modal elements missing");
         return;
       }
@@ -249,8 +241,7 @@ if (dFullName) {
       const checked = confirmChange.checked;
 
       if (!newPass || newPass !== confirmPass || !checked) {
-        passwordError.style.color = "red";
-        passwordError.textContent = "Invalid password confirmation";
+        showToast("Invalid password confirmation");
         return;
       }
 
@@ -263,21 +254,17 @@ if (dFullName) {
 
         const data = await res.json();
         if (!res.ok) {
-          passwordError.style.color = "red";
-          passwordError.textContent = data.message || "Server error";
+          showToast(data.message || "Server error");
           return;
         }
 
-        passwordError.style.color = "green";
-        passwordError.textContent = "Password updated successfully";
+        showToast("Password updated successfully");
 
         setTimeout(() => {
           if (passwordModal) passwordModal.style.display = "none";
-          passwordError.textContent = "";
         }, 1200);
       } catch (err) {
-        passwordError.style.color = "red";
-        passwordError.textContent = "Server error";
+        showToast("Server error");
         console.error(err);
       }
     });

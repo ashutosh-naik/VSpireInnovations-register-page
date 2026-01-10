@@ -8,7 +8,7 @@
   </head>
   <body>
     <div id="userDataContainer">
-      <h2>User details</h2>
+      <h2 id="greeting"></h2>
 
       <p>
         <strong>Name:</strong> <span id="dFullName"></span
@@ -35,9 +35,6 @@
         ><input id="editPincode" />
       </p>
 
-      <p id="profileError" class="error-msg"></p>
-      <p id="profileSuccess" class="success-msg"></p>
-
       <button id="updateProfileBtn">Update Profile</button>
       <button id="changePasswordBtn">Change Password</button>
       <button id="logoutBtn">Logout</button>
@@ -59,8 +56,6 @@
           <input type="checkbox" id="confirmChange" />
           <label for="confirmChange">I confirm password change</label>
         </div>
-
-        <p id="passwordError" class="error-msg"></p>
 
         <button id="savePasswordBtn">Save Password</button>
         <button id="closeModalBtn">Cancel</button>
