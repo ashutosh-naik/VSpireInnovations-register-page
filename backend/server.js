@@ -15,9 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect(
-    "mongodb+srv://registerapp:5in79kEJaWM1gyht@cluster0.nacoei9.mongodb.net/registerApp?retryWrites=true&w=majority"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB Atlas connected"))
   .catch((err) => console.log(err));
 
@@ -187,6 +185,8 @@ app.delete("/user", auth, async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
