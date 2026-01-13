@@ -1,4 +1,4 @@
-const API = "https://register-login-backend-em4o.onrender.com/";
+const API = "https://register-login-backend-em40.onrender.com";
 
 async function loadUserFromServer() {
   try {
